@@ -13,12 +13,14 @@ def main(inputFile, columns):
 
     # Select columns & print mean, median and variance
     selected = data[columns]
-    print(selected.mean())
-    print(selected.median())
-    print(selected.var())
+    print('========|Mean|========')
+    print(selected.mean().to_string())
+    print('=======|Median|=======')
+    print(selected.median().to_string())
+    print('======|Variance|======')
+    print(selected.var().to_string())
 
     # Build Histogram
-    plt.figure(0)
     selected.plot(kind='hist', alpha=0.8)
     plt.title('Histogram')
     plt.xlabel('Metric')
