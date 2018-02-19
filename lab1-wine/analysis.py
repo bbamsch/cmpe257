@@ -7,6 +7,7 @@ def main(inputFile, columns):
         inputFile,
         sep=',',
         header=0)
+
     # Transform all columns to lowercase
     data = data.rename(columns=str.lower)
 
@@ -17,9 +18,18 @@ def main(inputFile, columns):
     print(selected.var())
 
     # Build Histogram
-    selected.plot.hist()
+    plt.figure(0)
+    selected.plot(kind='hist', alpha=0.8)
+    plt.title('Histogram')
     plt.xlabel('Metric')
     plt.ylabel('Frequency')
+
+    plt.figure(1)
+    selected.plot(kind='box')
+    plt.title('Box')
+    plt.xlabel('Metric')
+    plt.ylabel('Value')
+
     plt.show()
 
 if __name__ == '__main__':
