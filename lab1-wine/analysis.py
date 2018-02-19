@@ -23,7 +23,7 @@ def main(inputFile, columns):
     # Build Histogram
     selected.plot(kind='hist', alpha=0.8)
     plt.title('Histogram')
-    plt.xlabel('Metric')
+    plt.xlabel('Value')
     plt.ylabel('Frequency')
 
     plt.figure(1)
