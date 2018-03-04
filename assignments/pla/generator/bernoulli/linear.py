@@ -27,4 +27,3 @@ class LinearBernoulliGenerator:
             data.append(DataPoint([x, y], target_value))
 
         return data
-

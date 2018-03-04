@@ -2,12 +2,13 @@ import numpy as np
 import random
 from data import DataPoint
 
+
 class PLA:
     """Implementation of the Perceptron Learning Algorithm"""
 
     def __init__(self, data: list):
         self.data = data
-        self.weights = [0, 0, 0]
+        self.weights = [random.uniform(-1, 1) for _ in range(3)]
 
     def iterate(self):
         """Run a single iteration of the Perceptron Learning Algorithm"""
@@ -52,4 +53,3 @@ class PLA:
         if num_total is 0:
             return 0
         return num_correct / num_total
-
