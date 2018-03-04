@@ -1,3 +1,4 @@
+import math
 import random
 from data import DataPoint
 
@@ -7,7 +8,7 @@ class LinearBernoulliGenerator:
 
     def __init__(self, m: float = None, b: float = None):
         """Create a DataSet generator based on a binary, linearly-separable divider."""
-        self.m: float = m if m is not None else random.uniform(-1, 1)
+        self.m: float = m if m is not None else math.tan(random.uniform(-math.pi/2, math.pi/2))
         self.b: float = b if b is not None else random.uniform(-1, 1)
 
     def generate(self, num: int, seed: int = None):
