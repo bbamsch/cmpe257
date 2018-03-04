@@ -4,7 +4,7 @@ from absl import app
 from absl import flags
 from absl import logging
 from generator.bernoulli import LinearBernoulliGenerator, RandomBernoulliGenerator
-from algorithm import PLA
+from algorithm import PLA, Pocket
 
 FLAGS = flags.FLAGS
 
@@ -25,6 +25,11 @@ flags.DEFINE_integer(
     name='inference_points',
     default=1000,
     help='Number of Data points to classify during inference')
+flags.DEFINE_enum(
+    name='algorithm',
+    default='pla',
+    enum_values=['pla', 'pocket'],
+    help='Algorithm to use for learning')
 
 
 def main(argv):
@@ -35,13 +40,21 @@ def main(argv):
     logging.info('Num Data Points => {0}'.format(FLAGS.learning_points))
     logging.info('Num Iterations => {0}'.format(FLAGS.num_iter))
 
-    generator = LinearBernoulliGenerator()
     if FLAGS.generator == 'linear':
         generator = LinearBernoulliGenerator()
     elif FLAGS.generator == 'random':
         generator = RandomBernoulliGenerator()
+    else:
+        raise NotImplementedError('Generator not found')
 
-    runner = PLA(generator.generate(FLAGS.learning_points))
+    data = generator.generate(FLAGS.learning_points)
+
+    if FLAGS.algorithm == 'pla':
+        runner = PLA(data)
+    elif FLAGS.algorithm == 'pocket':
+        runner = Pocket(data)
+    else:
+        raise NotImplementedError('Algorithm not found')
 
     for iteration in map(lambda x: x+1, range(FLAGS.num_iter)):
         runner.iterate()
