@@ -18,7 +18,7 @@ flags.DEFINE_enum(
     help='Data generator to use')
 flags.DEFINE_integer(
     name='learning_points',
-    default=1000,
+    default=500,
     help='Number of Data points used during learning')
 flags.DEFINE_integer(
     name='num_iter',
@@ -26,7 +26,7 @@ flags.DEFINE_integer(
     help='Number of PLA iterations to run during training')
 flags.DEFINE_integer(
     name='inference_points',
-    default=1000,
+    default=200,
     help='Number of Data points to classify during inference')
 flags.DEFINE_enum(
     name='algorithm',
@@ -80,11 +80,16 @@ def main(argv):
     test_points = generator.generate(FLAGS.inference_points)
     test_set_total = 0
     test_set_correct = 0
+    correct_points = []
+    incorrect_points = []
     for point in test_points:
         predicted_target = runner.classify(point)
 
         if predicted_target == point.target:
             test_set_correct += 1
+            correct_points.append(point)
+        else:
+            incorrect_points.append(point)
 
         test_set_total += 1
 
@@ -108,6 +113,18 @@ def main(argv):
     plt.ylabel('Y')
 
     plt.figure(2)
+    plot_generator_if_possible(generator)
+    plot_model(runner)
+    plot_data(correct_points, label='Correct')
+    plot_data(incorrect_points, label='Incorrect', marker='x')
+    plt.xlim(-1, 1)
+    plt.ylim(-1, 1)
+    plt.legend(loc='lower center')
+    plt.title('Perceptron Inference')
+    plt.xlabel('X')
+    plt.ylabel('Y')
+
+    plt.figure(3)
     plt.plot(running_accuracy, label='Accuracy')
     plt.xlim(0, FLAGS.learning_points)
     plt.legend(loc='lower center')
@@ -159,7 +176,7 @@ def plot_model(runner):
         label='Model')
 
 
-def plot_data(data: list):
+def plot_data(data: list, label: str = None, marker: str = 'o'):
     x_values = []
     y_values = []
     c_values = []
@@ -175,7 +192,9 @@ def plot_data(data: list):
     plt.scatter(
         x_values,
         y_values,
-        c=c_values)
+        c=c_values,
+        label=label,
+        marker=marker)
 
 
 if __name__ == '__main__':
